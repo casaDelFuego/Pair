@@ -1,0 +1,59 @@
+@model Pair.ViewModels.CalculatorModel
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function updateValue(e) {
+            var isEnter = e.keyCode === 13;
+            
+            if (isEnter) {
+                window.location.href = "/api/calculator?message=" + e.target.value;   
+            }
+        }
+        
+        function createRequest() {            
+            var n1 = document.getElementById('n1').value;
+            var n2 = document.getElementById('n2').value;
+            console.log("n1 =", n1, "n2 =", n2);
+            var qString= $.post( "/api/calculator", { firstNumber: n1, /*operatorCal: clickedOp,*/ secondNumber: n2 } );
+            console.log(qString);          
+        }      
+
+        
+        function selectedOperator(clickedOp) {
+            console.log(clickedOp);
+            return clickedOp;            
+        }
+        
+        function calculate() {
+          
+        }
+    </script>
+    <style>
+        *{margin: 5px}
+    </style>
+</head>
+<body>
+<div>
+    <p>Here's the @Model.Message</p> 
+    
+    <input onkeyup="updateValue(event)" id="message"/>
+</div>
+<p>Calculator</p>
+<div>
+    <input onchange="createRequest (event)" id="n1" /><br/>
+    <button onclick="selectedOperator(this.id)" id="plus">+</button>
+    <button onclick="selectedOperator(this.id)" id="minus">-</button>
+    <button onclick="selectedOperator(this.id)" id="multiply">*</button>
+    <button onclick="selectedOperator(this.id)" id="divide">/</button><br/>
+    <input onchange="createRequest(event)" id="n2"/><br/>
+    <p>you typed @Model.FirstNumber @Model.Operator @Model.SecondNumber</p>
+    <button onclick="calculate">Calculate</button>
+    <p>Result:</p>
+</div>
+</body>
+</html>
